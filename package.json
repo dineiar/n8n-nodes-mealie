@@ -1,19 +1,19 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-nodes-mealie",
   "version": "0.1.0",
-  "description": "",
+  "description": "Mealie community node for n8n",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/dineiar/n8n-nodes-mealie",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Dinei A. Rockenbach",
+    "email": "dineiar@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/dineiar/n8n-nodes-mealie.git"
   },
   "engines": {
     "node": ">=20.15"
