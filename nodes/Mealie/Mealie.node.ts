@@ -1,7 +1,14 @@
 import { INodeType, INodeTypeDescription, NodeConnectionType } from "n8n-workflow";
 import {
+  AdminAboutResource,
+  AdminBackupsResource,
+  AdminManageHouseholdsResource,
+  AdminManageUsersResource,
   AppAboutResource,
-  UsersResource,
+  GroupsHouseholdsResource,
+  UsersCrudResource,
+  UsersRatingsResource,
+  UsersTokensResource,
 } from "./resources";
 
 export class Mealie implements INodeType {
@@ -21,8 +28,22 @@ export class Mealie implements INodeType {
     usableAsTool: true,
     credentials: [
       {
+        name: 'mealieNoAuthApi',
+        required: true,
+        displayOptions: {
+          show: {
+            authentication: ['noAuth'],
+          },
+        },
+      },
+      {
         name: 'mealieApiKeyApi',
         required: true,
+        displayOptions: {
+          show: {
+            authentication: ['apiToken'],
+          },
+        },
       },
     ],
     requestDefaults: {
@@ -35,19 +56,49 @@ export class Mealie implements INodeType {
     },
     properties: [
       {
+        displayName: 'Authentication',
+        name: 'authentication',
+        type: 'options',
+        options: [
+          {
+            name: 'No Authentication',
+            value: 'noAuth',
+          },
+          {
+            name: 'API Token',
+            value: 'apiToken',
+          },
+        ],
+        default: 'apiToken',
+      },
+      {
         displayName: 'Resource',
         name: 'resource',
         type: 'options',
         noDataExpression: true,
         options: [
+          AdminAboutResource.Resource,
+          AdminBackupsResource.Resource,
+          AdminManageHouseholdsResource.Resource,
+          AdminManageUsersResource.Resource,
           AppAboutResource.Resource,
-          UsersResource.Resource,
+          GroupsHouseholdsResource.Resource,
+          UsersCrudResource.Resource,
+          UsersRatingsResource.Resource,
+          UsersTokensResource.Resource,
         ],
         default: '',
         required: true,
       },
+      ...AdminAboutResource.Operations,
+      ...AdminBackupsResource.Operations,
+      ...AdminManageHouseholdsResource.Operations,
+      ...AdminManageUsersResource.Operations,
       ...AppAboutResource.Operations,
-      ...UsersResource.Operations,
+      ...GroupsHouseholdsResource.Operations,
+      ...UsersCrudResource.Operations,
+      ...UsersRatingsResource.Operations,
+      ...UsersTokensResource.Operations,
     ],
   };
 }

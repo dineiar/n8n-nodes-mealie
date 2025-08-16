@@ -1,6 +1,7 @@
 import { INodeProperties, INodePropertyOptions } from "n8n-workflow";
+import { MealieN8nOperation } from '../../generic/MealieN8nOperation';
 
-export class AppAboutOperation {
+export class AppAboutOperation implements MealieN8nOperation {
   static readonly OperationId = 'getAppAbout';
   static readonly Operation: INodePropertyOptions = {
       name: 'Get Instance Information',

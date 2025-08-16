@@ -1,17 +1,17 @@
 import { INodeProperties, INodePropertyOptions } from "n8n-workflow";
 import {
-  GetFavoritesOperation,
-  GetRatingsOperation,
+  RegisterUserOperation,
   SelfFavoritesOperation,
   SelfOperation,
   SelfRatingsOperation,
-} from "./users";
+} from "./usersCrud";
+import { MealieN8nResource } from "../generic/MealieN8nResource";
 
-export class UsersResource {
-  static readonly ResourceId = 'users';
+export class UsersCrudResource implements MealieN8nResource {
+  static readonly ResourceId = 'usersCrud';
   static readonly Resource: INodePropertyOptions = {
-    name: 'Users',
-    value: UsersResource.ResourceId,
+    name: 'Users: CRUD',
+    value: UsersCrudResource.ResourceId,
   };
   static readonly Operations: INodeProperties[] = [
     {
@@ -21,22 +21,20 @@ export class UsersResource {
       noDataExpression: true,
       displayOptions: {
         show: {
-          resource: [UsersResource.ResourceId],
+          resource: [UsersCrudResource.ResourceId],
         },
       },
       options: [
-        GetRatingsOperation.Operation,
-        GetFavoritesOperation.Operation,
         SelfOperation.Operation,
         SelfRatingsOperation.Operation,
         SelfFavoritesOperation.Operation,
+        RegisterUserOperation.Operation,
       ],
       default: '',
     },
-    ...GetRatingsOperation.Fields,
-    ...GetFavoritesOperation.Fields,
     ...SelfOperation.Fields,
     ...SelfRatingsOperation.Fields,
     ...SelfFavoritesOperation.Fields,
+    ...RegisterUserOperation.Fields,
   ];
 }

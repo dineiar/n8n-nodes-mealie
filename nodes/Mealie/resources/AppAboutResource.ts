@@ -1,10 +1,15 @@
 import { INodeProperties, INodePropertyOptions } from "n8n-workflow";
-import { AppAboutOperation, AppStartupInfoOperation, AppThemeOperation } from "./appabout";
+import {
+  AppAboutOperation,
+  AppStartupInfoOperation,
+  AppThemeOperation,
+} from "./appAbout";
+import { MealieN8nResource } from "../generic/MealieN8nResource";
 
-export class AppAboutResource {
+export class AppAboutResource implements MealieN8nResource {
   static readonly ResourceId = 'appAbout';
   static readonly Resource: INodePropertyOptions = {
-    name: 'App About',
+    name: 'App: About',
     value: AppAboutResource.ResourceId,
   };
   static readonly Operations: INodeProperties[] = [

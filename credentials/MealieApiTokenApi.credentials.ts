@@ -8,17 +8,11 @@ import {
 
 export class MealieApiTokenApi implements ICredentialType {
   name = 'mealieApiKeyApi';
+  extends = ['mealieNoAuthApi'];
   displayName = 'Mealie API Token API';
   icon: Icon = 'file:mealie.svg';
   documentationUrl = 'https://docs.mealie.io/documentation/getting-started/api-usage/';
   properties: INodeProperties[] = [
-    {
-      displayName: 'Mealie Base URL',
-      description: 'The base URL of your Mealie instance, e.g., http://<your-mealie-site>/',
-      name: 'baseUrl',
-      type: 'string',
-      default: 'https://demo.mealie.io/',
-    },
     {
       displayName: 'API Token',
       name: 'apiToken',
@@ -32,8 +26,6 @@ export class MealieApiTokenApi implements ICredentialType {
 
   // This allows the credential to be used by other parts of n8n
   // stating how this credential is injected as part of the request
-  // An example is the Http Request node that can make generic calls
-  // reusing this credential
   authenticate: IAuthenticateGeneric = {
     type: 'generic',
     properties: {

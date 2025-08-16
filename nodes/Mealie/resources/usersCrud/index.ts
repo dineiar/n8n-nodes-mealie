@@ -1,5 +1,4 @@
-export * from './GetFavoritesOperation';
-export * from './GetRatingsOperation';
+export * from './RegisterUserOperation';
 export * from './SelfFavoritesOperation';
 export * from './SelfOperation';
 export * from './SelfRatingsOperation';

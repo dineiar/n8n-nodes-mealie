@@ -1,6 +1,7 @@
 import { INodeProperties, INodePropertyOptions } from "n8n-workflow";
+import { MealieN8nOperation } from '../../generic/MealieN8nOperation';
 
-export class GetFavoritesOperation {
+export class GetFavoritesOperation implements MealieN8nOperation {
   static readonly OperationId = 'getUserFavorites';
   static readonly Operation: INodePropertyOptions = {
     name: 'Get Favorites From User',
