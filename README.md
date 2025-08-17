@@ -1,47 +1,108 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n-nodes-mealie
 
-# n8n-nodes-starter
+This is an n8n community node that implements the [Mealie](https://mealie.io/) Recipe Management API into n8n to automate workflows.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+## Description
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+### Credentials
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+This node supports two authentication types:
 
-## Prerequisites
+- **Mealie No Auth API**: For public endpoints that don't require authentication (e.g., App: About, User: Login). Only requires your Mealie base URL.
+- **Mealie API Token API**: Authenticates using a Bearer token generated from your Mealie instance. Requires your Mealie base URL and an API token. This is the recommended authentication method for most use cases. The token can be either a long-lived token generated on the Mealie instance (see [documentation](https://docs.mealie.io/documentation/getting-started/api-usage/#pagination)) or generated on-the-fly using the User: Login operation. In the second case, you might want to use dynamic expressions in the credentials definition on n8n (e.g., `{{ $json.access_token }}`)
 
-You need the following installed on your development machine:
+To obtain an API token, log into your Mealie instance and navigate to the user settings to generate a new API token.
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 20. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  npm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+### Available Resources and Operations
 
-## Using this starter
+The following Mealie API resources are currently implemented in this node:
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+#### **Application Resources**
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+- **App: About** - General application information. *These endpoints are public and do not require an authentication token*.
+  - Get app about information
+  - Get app startup information
+  - Get app theme information
 
-## More information
+#### **Admin Resources**
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+- **Admin: About** - Administrative information about the Mealie instance
+  - Get app information
+  - Get app statistics
+  - Check app configuration
+
+- **Admin: Backups** - Database backup management for administrators
+  - Get all backups
+  - Create backup
+  - Get specific backup
+  - Delete backup
+  - Upload backup
+  - Restore backup
+
+- **Admin: Manage Households** - Household management for administrators
+  - Get all households
+  - Create household
+  - Get specific household
+  - Update household
+  - Delete household
+
+- **Admin: Manage Users** - User management for administrators
+  - Get all users
+  - Create user
+  - Get specific user
+  - Update user
+  - Delete user
+  - Unlock users
+  - Generate password reset token
+
+#### **Group/Household Resources**
+
+- **Groups: Households** - Group-level household operations
+  - Get all households
+  - Get specific household
+
+- **Households: Invitations** - Household invitation management
+  - Create invite token
+  - Get invite tokens
+  - Send email invitation
+
+#### **User Resources**
+
+- **Users: Authentication** - User authentication operations
+  - Login
+  - Logout
+  - Refresh token
+  - OAuth callback
+  - OAuth login
+
+- **Users: CRUD** - User profile and data management
+  - Get self information
+  - Get self ratings
+  - Get self favorites
+  - Register user
+  - Update password
+  - Update user profile
+
+- **Users: Ratings** - User rating operations
+  - Various rating-related operations
+
+- **Users: Tokens** - API token management
+  - Create API token
+  - Delete API token
+
+
+
+## Installing n8n-nodes-mealie
+
+To install a custom node in n8n, follow these steps:
+
+1. Refer to the official documentation: [n8n Custom Node Installation](https://docs.n8n.io/integrations/community-nodes/installation/)
+
+2. Choose the custom node you want to install, `n8n-nodes-mealie`.
+
+3. Follow the instructions provided in the documentation to install and configure the custom node.
+
+For detailed installation steps and configuration options, please visit the official n8n documentation linked above.
 
 ## License
 

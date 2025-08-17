@@ -4,6 +4,8 @@ import {
   SelfFavoritesOperation,
   SelfOperation,
   SelfRatingsOperation,
+  UpdatePasswordOperation,
+  UpdateUserOperation,
 } from "./usersCrud";
 import { MealieN8nResource } from "../generic/MealieN8nResource";
 
@@ -29,6 +31,8 @@ export class UsersCrudResource implements MealieN8nResource {
         SelfRatingsOperation.Operation,
         SelfFavoritesOperation.Operation,
         RegisterUserOperation.Operation,
+        UpdatePasswordOperation.Operation,
+        UpdateUserOperation.Operation,
       ],
       default: '',
     },
@@ -36,5 +40,7 @@ export class UsersCrudResource implements MealieN8nResource {
     ...SelfRatingsOperation.Fields,
     ...SelfFavoritesOperation.Fields,
     ...RegisterUserOperation.Fields,
+    ...UpdatePasswordOperation.Fields,
+    ...UpdateUserOperation.Fields,
   ];
 }
