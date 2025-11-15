@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-mealie",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Mealie community node for n8n",
   "keywords": [
     "n8n-community-node-package"
@@ -37,7 +37,7 @@
       "dist/credentials/MealieNoAuthApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Mealie/Mealie.node.ts"
+      "dist/nodes/Mealie/Mealie.node.js"
     ]
   },
   "devDependencies": {

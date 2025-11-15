@@ -1,5 +1,6 @@
 export * from './AdminAboutResource';
 export * from './AdminBackupsResource';
+export * from './AdminEmailResource';
 export * from './AdminMaintenanceResource';
 export * from './AdminManageGroupsResource';
 export * from './AdminManageHouseholdsResource';

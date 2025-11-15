@@ -11,15 +11,13 @@ This node supports two authentication types:
 - **Mealie No Auth API**: For public endpoints that don't require authentication (e.g., App: About, User: Login). Only requires your Mealie base URL.
 - **Mealie API Token API**: Authenticates using a Bearer token generated from your Mealie instance. Requires your Mealie base URL and an API token. This is the recommended authentication method for most use cases. The token can be either a long-lived token generated on the Mealie instance (see [documentation](https://docs.mealie.io/documentation/getting-started/api-usage/#pagination)) or generated on-the-fly using the User: Login operation. In the second case, you might want to use dynamic expressions in the credentials definition on n8n (e.g., `{{ $json.access_token }}`)
 
-To obtain an API token, log into your Mealie instance and navigate to the user settings to generate a new API token.
-
 ### Available Resources and Operations
 
 The following Mealie API resources are currently implemented in this node:
 
 #### **Application Resources**
 
-- **App: About** - General application information. *These endpoints are public and do not require an authentication token*.
+- **App: About** - General application information. *These operations are public and can be used with a Mealie No Auth API credential*.
   - Get app about information
   - Get app startup information
   - Get app theme information
@@ -67,6 +65,10 @@ The following Mealie API resources are currently implemented in this node:
   - Unlock users
   - Generate password reset token
 
+- **Admin: Email** - Email system management for administrators
+  - Check Email configuration
+  - Send test email
+
 #### **Group/Household Resources**
 
 - **Groups: Households** - Group-level household operations
@@ -81,7 +83,7 @@ The following Mealie API resources are currently implemented in this node:
 #### **User Resources**
 
 - **Users: Authentication** - User authentication operations
-  - Login
+  - Login - *This operation is public and can be used with a Mealie No Auth API credential*
   - Logout
   - Refresh token
   - OAuth callback
@@ -120,12 +122,6 @@ For detailed installation steps and configuration options, please visit the offi
 ## Roadmap
 
 The following Mealie API endpoints are yet to be implemented in this node:
-
-#### **Admin Resources**
-
-- **Admin: Email** - Email system management for administrators
-  - Check Email configuration
-  - Send test email
 
 #### **Recipe Management Resources**
 

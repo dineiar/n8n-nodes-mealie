@@ -2,6 +2,7 @@ import { INodeType, INodeTypeDescription, NodeConnectionType } from "n8n-workflo
 import {
   AdminAboutResource,
   AdminBackupsResource,
+  AdminEmailResource,
   AdminMaintenanceResource,
   AdminManageGroupsResource,
   AdminManageHouseholdsResource,
@@ -83,6 +84,7 @@ export class Mealie implements INodeType {
         options: [
           AdminAboutResource.Resource,
           AdminBackupsResource.Resource,
+          AdminEmailResource.Resource,
           AdminMaintenanceResource.Resource,
           AdminManageGroupsResource.Resource,
           AdminManageHouseholdsResource.Resource,
@@ -100,6 +102,7 @@ export class Mealie implements INodeType {
       },
       ...AdminAboutResource.Operations,
       ...AdminBackupsResource.Operations,
+      ...AdminEmailResource.Operations,
       ...AdminMaintenanceResource.Operations,
       ...AdminManageGroupsResource.Operations,
       ...AdminManageHouseholdsResource.Operations,
