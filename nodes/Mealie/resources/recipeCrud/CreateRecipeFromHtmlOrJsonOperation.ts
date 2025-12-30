@@ -358,29 +358,28 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 		// ============ COMMON FIELDS ============
 
 		{
-			displayName: 'Include Tags',
-			name: 'includeTags',
-			type: 'boolean',
-			default: false,
-			description: 'Whether to include tags from the parsed recipe data',
-			displayOptions: {
-				show: {
-					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+			displayName: 'Additional Options',
+			name: 'additionalOptions',
+			type: 'collection',
+			placeholder: 'Show Additional Options',
+			default: {},
+			options: [
+				{
+					displayName: 'Include Tags',
+					name: 'includeTags',
+					type: 'boolean',
+					default: true,
+					description: 'Whether to include tags from the parsed recipe data',
 				},
-			},
-		},
-		{
-			displayName: 'Source URL',
-			name: 'url',
-			type: 'string',
-			default: '',
-			placeholder: 'https://example.com/original-recipe',
-			description: 'Optional URL of the original recipe source',
-			displayOptions: {
-				show: {
-					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+				{
+					displayName: 'Source URL',
+					name: 'url',
+					type: 'string',
+					default: '',
+					placeholder: 'https://example.com/original-recipe',
+					description: 'Optional URL of the original recipe source',
 				},
-			},
+			],
 		},
 	];
 }
