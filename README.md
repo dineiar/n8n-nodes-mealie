@@ -105,6 +105,11 @@ The following Mealie API resources are currently implemented in this node:
   - Create API token
   - Delete API token
 
+#### **Recipe Resources**
+
+- **Recipe: CRUD** - Core recipe operations
+  - Create recipe from HTML or JSON
+
 
 
 ## Installing n8n-nodes-mealie
@@ -133,7 +138,6 @@ The following Mealie API endpoints are yet to be implemented in this node:
 - **Recipe: CRUD** - Core recipe operations
   - CRUD for recipes
   - Test parsing recipe
-  - Create recipe from HTML or JSON
   - Create recipe from image
   - Create recipe from zip
   - Suggest recipe

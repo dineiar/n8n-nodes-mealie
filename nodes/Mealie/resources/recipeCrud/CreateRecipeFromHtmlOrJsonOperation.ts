@@ -53,6 +53,15 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 								text: item.step,
 							})) || [];
 
+							// Validate required fields
+							if (ingredients.length === 0) {
+								throw new Error('At least one ingredient is required to create a recipe');
+							}
+
+							if (instructions.length === 0) {
+								throw new Error('At least one instruction step is required to create a recipe');
+							}
+
 							// Build JSON-LD object
 							const jsonLd: Record<string, unknown> = {
 								'@context': 'https://schema.org',
@@ -151,7 +160,7 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 			},
 			default: {},
 			placeholder: 'Add Ingredient',
-			description: 'List of ingredients for the recipe',
+			description: 'List of ingredients for the recipe. At least one ingredient is required.',
 			displayOptions: {
 				show: {
 					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
@@ -185,7 +194,7 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 			},
 			default: {},
 			placeholder: 'Add Step',
-			description: 'Step-by-step instructions for the recipe',
+			description: 'Step-by-step instructions for the recipe. At least one step is required.',
 			displayOptions: {
 				show: {
 					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
