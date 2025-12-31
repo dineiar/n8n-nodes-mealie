@@ -17,8 +17,14 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 				preSend: [
 					async function (this, requestOptions) {
 						const advancedMode = this.getNodeParameter('advancedMode') as boolean;
-						const includeTags = this.getNodeParameter('includeTags') as boolean;
-						const url = this.getNodeParameter('url', '') as string;
+						
+						// Get additional options
+						const additionalOptions = this.getNodeParameter('additionalOptions', {}) as {
+							includeTags?: boolean;
+							url?: string;
+						};
+						const includeTags = additionalOptions.includeTags ?? true;
+						const url = additionalOptions.url ?? '';
 
 						let data: string;
 
@@ -38,20 +44,58 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 							const totalTime = this.getNodeParameter('totalTime', '') as string;
 							const imageUrl = this.getNodeParameter('imageUrl', '') as string;
 
-							// Get ingredients from fixedCollection
-							const ingredientsData = this.getNodeParameter('ingredientsUi', {}) as {
-								ingredientValues?: Array<{ ingredient: string }>;
-							};
-							const ingredients: string[] = ingredientsData.ingredientValues?.map(item => item.ingredient) || [];
+							// Check if using advanced list mode for ingredients
+							const ingredientsMode = this.getNodeParameter('ingredientsMode') as string;
+							let ingredients: string[] = [];
 
-							// Get instructions from fixedCollection
-							const instructionsData = this.getNodeParameter('instructionsUi', {}) as {
-								instructionValues?: Array<{ step: string }>;
-							};
-							const instructions = instructionsData.instructionValues?.map(item => ({
-								'@type': 'HowToStep',
-								text: item.step,
-							})) || [];
+							if (ingredientsMode === 'json') {
+								// JSON array mode
+								const ingredientsJson = this.getNodeParameter('ingredientsJson') as string;
+								try {
+									ingredients = JSON.parse(ingredientsJson);
+									if (!Array.isArray(ingredients)) {
+										throw new Error('Ingredients JSON must be an array');
+									}
+								} catch (error) {
+									throw new Error(`Invalid JSON for ingredients: ${error.message}`);
+								}
+							} else {
+								// UI mode (fixedCollection)
+								const ingredientsData = this.getNodeParameter('ingredientsUi', {}) as {
+									ingredientValues?: Array<{ ingredient: string }>;
+								};
+								ingredients = ingredientsData.ingredientValues?.map(item => item.ingredient) || [];
+							}
+
+							// Check if using advanced list mode for instructions
+							const instructionsMode = this.getNodeParameter('instructionsMode') as string;
+							let instructions: Array<{ '@type': string; text: string }> = [];
+
+							if (instructionsMode === 'json') {
+								// JSON array mode
+								const instructionsJson = this.getNodeParameter('instructionsJson') as string;
+								try {
+									const instructionsArray = JSON.parse(instructionsJson);
+									if (!Array.isArray(instructionsArray)) {
+										throw new Error('Instructions JSON must be an array');
+									}
+									instructions = instructionsArray.map(step => ({
+										'@type': 'HowToStep',
+										text: step,
+									}));
+								} catch (error) {
+									throw new Error(`Invalid JSON for instructions: ${error.message}`);
+								}
+							} else {
+								// UI mode (fixedCollection)
+								const instructionsData = this.getNodeParameter('instructionsUi', {}) as {
+									instructionValues?: Array<{ step: string }>;
+								};
+								instructions = instructionsData.instructionValues?.map(item => ({
+									'@type': 'HowToStep',
+									text: item.step,
+								})) || [];
+							}
 
 							// Validate required fields
 							if (ingredients.length === 0) {
@@ -150,6 +194,34 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 				},
 			},
 		},
+
+		// ============ INGREDIENTS SECTION ============
+
+		{
+			displayName: 'Ingredients Input Mode',
+			name: 'ingredientsMode',
+			type: 'options',
+			options: [
+				{
+					name: 'Add One by One',
+					value: 'ui',
+					description: 'Add ingredients individually using the UI',
+				},
+				{
+					name: 'JSON Array',
+					value: 'json',
+					description: 'Provide ingredients as a JSON array (ideal for automation)',
+				},
+			],
+			default: 'ui',
+			description: 'Choose how to input ingredients',
+			displayOptions: {
+				show: {
+					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+					advancedMode: [false],
+				},
+			},
+		},
 		{
 			displayName: 'Ingredients',
 			name: 'ingredientsUi',
@@ -165,6 +237,7 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 				show: {
 					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
 					advancedMode: [false],
+					ingredientsMode: ['ui'],
 				},
 			},
 			options: [
@@ -185,6 +258,53 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 			],
 		},
 		{
+			displayName: 'Ingredients (JSON Array)',
+			name: 'ingredientsJson',
+			type: 'string',
+			typeOptions: {
+				rows: 6,
+			},
+			required: true,
+			default: '["2 cups flour", "1 tsp salt", "1 cup water"]',
+			placeholder: '["ingredient 1", "ingredient 2", "ingredient 3"]',
+			description: 'Ingredients as a JSON array of strings. At least one ingredient is required.',
+			displayOptions: {
+				show: {
+					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+					advancedMode: [false],
+					ingredientsMode: ['json'],
+				},
+			},
+		},
+
+		// ============ INSTRUCTIONS SECTION ============
+
+		{
+			displayName: 'Instructions Input Mode',
+			name: 'instructionsMode',
+			type: 'options',
+			options: [
+				{
+					name: 'Add One by One',
+					value: 'ui',
+					description: 'Add instruction steps individually using the UI',
+				},
+				{
+					name: 'JSON Array',
+					value: 'json',
+					description: 'Provide instructions as a JSON array (ideal for automation)',
+				},
+			],
+			default: 'ui',
+			description: 'Choose how to input instructions',
+			displayOptions: {
+				show: {
+					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+					advancedMode: [false],
+				},
+			},
+		},
+		{
 			displayName: 'Instructions',
 			name: 'instructionsUi',
 			type: 'fixedCollection',
@@ -199,6 +319,7 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 				show: {
 					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
 					advancedMode: [false],
+					instructionsMode: ['ui'],
 				},
 			},
 			options: [
@@ -221,6 +342,28 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 				},
 			],
 		},
+		{
+			displayName: 'Instructions (JSON Array)',
+			name: 'instructionsJson',
+			type: 'string',
+			typeOptions: {
+				rows: 8,
+			},
+			required: true,
+			default: '["Preheat the oven to 350°F", "Mix dry ingredients", "Add wet ingredients and stir", "Bake for 30 minutes"]',
+			placeholder: '["step 1", "step 2", "step 3"]',
+			description: 'Instructions as a JSON array of strings. At least one step is required.',
+			displayOptions: {
+				show: {
+					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+					advancedMode: [false],
+					instructionsMode: ['json'],
+				},
+			},
+		},
+
+		// ============ OTHER RECIPE FIELDS ============
+
 		{
 			displayName: 'Category',
 			name: 'recipeCategory',
