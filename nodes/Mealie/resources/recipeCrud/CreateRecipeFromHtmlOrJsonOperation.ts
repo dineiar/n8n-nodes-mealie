@@ -13,6 +13,48 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 				method: 'POST',
 				url: '/api/recipes/create/html-or-json',
 			},
+			output: {
+				postReceive: [
+					async function (this, items) {
+						// Get the parseOutput option (default to true)
+						const additionalOptions = this.getNodeParameter('additionalOptions', {}) as {
+							parseOutput?: boolean;
+						};
+						const parseOutput = additionalOptions.parseOutput ?? true;
+
+						if (!parseOutput) {
+							// Return raw response if parseOutput is disabled
+							return items;
+						}
+
+						// Transform the response to have a slug key
+						return items.map((item) => {
+							let slug;
+							
+							// Handle different response formats
+							if (typeof item.json === 'string') {
+								// Direct string response
+								slug = item.json;
+							} else if (Array.isArray(item.json)) {
+								// Array response
+								slug = item.json[0];
+							} else if (item.json && typeof item.json === 'object') {
+								// Already an object, might already have slug
+								slug = item.json.slug || item.json;
+							} else {
+								slug = item.json;
+							}
+
+							return {
+								json: {
+									slug: slug,
+								},
+								pairedItem: item.pairedItem,
+							};
+						});
+					},
+				],
+			},
 			send: {
 				preSend: [
 					async function (this, requestOptions) {
@@ -506,6 +548,11 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 			type: 'collection',
 			placeholder: 'Show Additional Options',
 			default: {},
+			displayOptions: {
+				show: {
+					operation: [CreateRecipeFromHtmlOrJsonOperation.OperationId],
+				},
+			},
 			options: [
 				{
 					displayName: 'Include Tags',
@@ -521,6 +568,13 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 					default: '',
 					placeholder: 'https://example.com/original-recipe',
 					description: 'Optional URL of the original recipe source',
+				},
+				{
+					displayName: 'Parse Output',
+					name: 'parseOutput',
+					type: 'boolean',
+					default: true,
+					description: 'Whether to parse the response array into a structured object with "slug" key. If disabled, returns the raw array response from the API.',
 				},
 			],
 		},
