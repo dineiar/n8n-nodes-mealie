@@ -1,5 +1,5 @@
 import { INodeProperties, INodePropertyOptions } from "n8n-workflow";
-import { CreateRecipe, CreateRecipeFromHtmlOrJsonOperation } from "./recipeCrud";
+import { CreateRecipe } from "./recipeCrud";
 import { MealieN8nResource } from "../generic/MealieN8nResource";
 
 export class RecipeCrudResource implements MealieN8nResource {
@@ -21,11 +21,9 @@ export class RecipeCrudResource implements MealieN8nResource {
       },
       options: [
         CreateRecipe.Operation,
-        CreateRecipeFromHtmlOrJsonOperation.Operation,
       ],
       default: '',
     },
     ...CreateRecipe.Fields,
-    ...CreateRecipeFromHtmlOrJsonOperation.Fields,
   ];
 }
