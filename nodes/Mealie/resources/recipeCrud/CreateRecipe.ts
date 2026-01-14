@@ -181,8 +181,7 @@ export class CreateRecipe implements MealieN8nOperation {
 	};
 
 	static readonly Fields: INodeProperties[] = [
-		
-		// ============ BASE RECIPE DETAILS ============
+		// ============ SIMPLE MODE FIELDS ============
 
 		{
 			displayName: 'Recipe Name',
@@ -481,7 +480,7 @@ export class CreateRecipe implements MealieN8nOperation {
 			},
 		},
 
-		// ============ ADDITIONAL OPTIONS ============
+		// ============ COMMON FIELDS ============
 
 		{
 			displayName: 'Additional Options',
