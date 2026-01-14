@@ -3,7 +3,7 @@ import {
   AppAboutOperation,
   AppStartupInfoOperation,
   AppThemeOperation,
-} from "./appAbout";
+} from "./appabout";
 import { MealieN8nResource } from "../generic/MealieN8nResource";
 
 export class AppAboutResource implements MealieN8nResource {
