@@ -108,6 +108,7 @@ The following Mealie API resources are currently implemented in this node:
 #### **Recipe Resources**
 
 - **Recipe: CRUD** - Core recipe operations
+  - Create recipe from individual fields
   - Create recipe from HTML or JSON
 
 
