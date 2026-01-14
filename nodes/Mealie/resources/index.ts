@@ -8,8 +8,9 @@ export * from './AdminManageUsersResource';
 export * from './AppAboutResource';
 export * from './GroupsHouseholdsResource';
 export * from './HouseholdsInvitationsResource';
+export * from './RecipeCrudResource';
 export * from './UsersAuthenticationResource';
 export * from './UsersCrudResource';
 export * from './UsersRatingsResource';
 export * from './UsersTokensResource';
-export * from './RecipeCrudResource';
+

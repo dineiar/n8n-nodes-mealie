@@ -67,7 +67,7 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 						const url = additionalOptions.url ?? '';
 
 						// Raw JSON mode - use the data directly
-						const data = this.getNodeParameter('rawJsonData') as string;
+						const data = this.getNodeParameter('rawJsonOrHtmlData') as string;
 
 						// Build the request body
 						const body: Record<string, unknown> = {
@@ -91,15 +91,15 @@ export class CreateRecipeFromHtmlOrJsonOperation implements MealieN8nOperation {
 		// ============ ADVANCED MODE FIELD ============
 
 		{
-			displayName: 'JSON-LD Data',
-			name: 'rawJsonData',
+			displayName: 'JSON-LD or HTML Data',
+			name: 'rawJsonOrHtmlData',
 			type: 'string',
 			typeOptions: {
 				rows: 15,
 			},
 			required: true,
 			default: '',
-			placeholder: '{"@context": "https://schema.org", "@type": "Recipe", "name": "My Recipe", ...}',
+			placeholder: '{"@context": "https://schema.org", "@type": "Recipe", "name": "My Recipe", ...}\nor\n<html>...recipe markup...</html>',
 			description: 'Raw JSON-LD schema.org/Recipe data or HTML containing recipe markup',
 			displayOptions: {
 				show: {
